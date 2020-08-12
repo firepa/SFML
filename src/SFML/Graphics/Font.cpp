@@ -468,6 +468,26 @@ const Texture& Font::getTexture(unsigned int characterSize) const
     return m_pages[characterSize].texture;
 }
 
+////////////////////////////////////////////////////////////
+void Font::setSmooth( bool smooth )
+{
+    if (smooth != m_isSmooth)
+    {
+        m_isSmooth = smooth;
+
+        for (int i = 0; i < m_pages.size(); ++i)
+        {
+            m_pages[i].texture.setSmooth( m_isSmooth );
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////
+bool Font::isSmooth() const
+{
+    return m_isSmooth;
+}
+
 
 ////////////////////////////////////////////////////////////
 Font& Font::operator =(const Font& right)
@@ -734,7 +754,7 @@ IntRect Font::findGlyphRect(Page& page, unsigned int width, unsigned int height)
                 // Make the texture 2 times bigger
                 Texture newTexture;
                 newTexture.create(textureWidth * 2, textureHeight * 2);
-                newTexture.setSmooth(true);
+                newTexture.setSmooth(m_isSmooth);
                 newTexture.update(page.texture);
                 page.texture.swap(newTexture);
             }
